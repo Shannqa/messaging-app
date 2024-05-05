@@ -4,9 +4,10 @@
  * Module dependencies.
  */
 
-import app from "../app";
+import app from "../app.js";
 import debug from "debug";
 import http from "http";
+import { Server } from "socket.io";
 
 /**
  * Get port from environment and store in Express.
@@ -20,7 +21,11 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
-
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+  },
+});
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -48,6 +53,19 @@ function normalizePort(val) {
 
   return false;
 }
+
+/* socket */
+io.on("connection", (socket) => {
+  console.log("a user connected, id:", socket.id);
+
+  socket.on("message", (data) => {
+    io.emit("messageResponse", data);
+    console.log(data);
+  });
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 
 /**
  * Event listener for HTTP server "error" event.
@@ -84,3 +102,5 @@ function onListening() {
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
 }
+
+export default io;
