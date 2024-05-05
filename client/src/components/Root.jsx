@@ -1,12 +1,16 @@
 import { useState, useEffect, createContext, useReducer } from "react";
 import { Outlet } from "react-router-dom";
+import React from "react";
 // import Header from "./Header.jsx";
 // import Footer from "./Footer.jsx";
 import "../styles/main.css";
 // import ErrorModal from "./ErrorModal.jsx";
+import { io } from "socket.io-client";
+const ioSocket = io.connect("http://localhost:3000");
 
 export const AppContext = createContext({
-  // user: "",
+  socket: "",
+
   // setUser: () => {},
   // token: "",
   // setToken: () => {},
@@ -15,6 +19,7 @@ export const AppContext = createContext({
 });
 
 function Root() {
+  const socket = ioSocket;
   // const [user, setUser] = useState(null);
   // const [loading, setLoading] = useState();
   // const [error, setError] = useState(null);
@@ -46,16 +51,14 @@ function Root() {
 */
   return (
     <AppContext.Provider
-      value={
-        {
-          // user,
-          // setUser,
-          // token,
-          // setToken,
-          // error,
-          // setError,
-        }
-      }
+      value={{
+        socket,
+        // setUser,
+        // token,
+        // setToken,
+        // error,
+        // setError,
+      }}
     >
       <div className="root">
         {/* <Header /> */}

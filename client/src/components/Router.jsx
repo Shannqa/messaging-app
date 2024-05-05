@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import React from "react";
 import Root from "./Root.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 // import Placeholder from "./Placeholder.jsx";
