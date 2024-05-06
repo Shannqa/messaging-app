@@ -5,8 +5,8 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatBody() {
-  const { socket } = useContext(AppContext);
-  
+  const { socket, username } = useContext(AppContext);
+
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -15,11 +15,15 @@ function ChatBody() {
 
   return (
     <div className="chat-body">
-        {messages.map((msg) => {
-          return <p key={msg.socketID}>{msg.username}: {msg.text}</p>;
-        })}
+      {messages.map((msg) => {
+        return (
+          <p key={msg.socketID}>
+            {msg.username}: {msg.text}
+          </p>
+        );
+      })}
     </div>
   );
 }
 
-export default C;
+export default ChatBody;

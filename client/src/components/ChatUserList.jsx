@@ -6,19 +6,22 @@ import React from "react";
 
 function ChatTabs() {
   const { socket, user } = useContext(AppContext);
-  const [users, setUsers] = useState([])
-
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    socket.on("newUserResponse", (data) => {
-      setUsers(data)
-    }, [socket, users])
-  })
+    socket.on(
+      "newUserResponse",
+      (data) => {
+        setUsers(data);
+      },
+      [socket, users]
+    );
+  });
   return (
     <div className="chat-tabs">
-        {tabs.map((tab) => {
-          return <button key={}>{tab}</button>;
-        })}
+      {tabs.map((tab, index) => {
+        return <button key={index}>{tab}</button>;
+      })}
     </div>
   );
 }

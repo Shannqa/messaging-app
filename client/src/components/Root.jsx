@@ -11,7 +11,7 @@ const ioSocket = io.connect("http://localhost:3000");
 export const AppContext = createContext({
   socket: "",
   username: "",
-  setUser: () => {},
+  setUsername: () => {},
   // token: "",
   // setToken: () => {},
   // error: "",
@@ -20,7 +20,9 @@ export const AppContext = createContext({
 
 function Root() {
   const socket = ioSocket;
-  const [username, setUsername] = useState(localStorage.getItem("username") || "Anonymous");
+  const [username, setUsername] = useState(
+    localStorage.getItem("username") || null
+  );
 
   // const [loading, setLoading] = useState();
   // const [error, setError] = useState(null);
@@ -55,7 +57,7 @@ function Root() {
       value={{
         socket,
         username,
-        setUser,
+        setUsername,
         // token,
         // setToken,
         // error,

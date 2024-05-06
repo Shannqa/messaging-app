@@ -6,13 +6,13 @@ import React from "react";
 
 function ChatTabs() {
   const { socket } = useContext(AppContext);
-  const [tabs, setTabs] = useState(["All"])
+  const [tabs, setTabs] = useState(["All"]);
 
   return (
     <div className="chat-tabs">
-        {tabs.map((tab) => {
-          return <button key={}>{tab}</button>;
-        })}
+      {tabs.map((tab, index) => {
+        return <button key={index}>{tab}</button>;
+      })}
     </div>
   );
 }

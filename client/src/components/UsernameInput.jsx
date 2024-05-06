@@ -4,29 +4,30 @@ import React from "react";
 
 // import styles from "../styles/Home.module.css";
 
-function ChatInput() {
+function UsernameInput() {
   const { socket, username, setUsername } = useContext(AppContext);
-  
-  
+  const [name, setName] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
-    localStorage.setItem("username", username)
+    setUsername(name);
+    localStorage.setItem("username", name);
+    setName("");
   }
 
   return (
-      <form onSubmit={handleSendMessage}>
+    <form onSubmit={handleSubmit} className="username-input">
       <label htmlFor="username">Choose your username</label>
-        <input
-          id="username"
-          value={username}
-          type="text"
-          placeholder="Name"
-          onChange={(e) => setUsername(e.target.value)}
-        ></input>
-        <button type="submit">Submit</button>
-      </form>
+      <input
+        id="username"
+        value={name}
+        type="text"
+        placeholder="Name"
+        onChange={(e) => setName(e.target.value)}
+      ></input>
+      <button type="submit">Submit</button>
+    </form>
   );
 }
 
-export default ChatInput;
+export default UsernameInput;

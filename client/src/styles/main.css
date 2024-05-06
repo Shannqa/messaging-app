@@ -1,0 +1,14 @@
+.chat-body {
+  width: 800px;
+  height: 400px;
+  border: 1px grey solid;
+  padding: 4px;
+}
+
+.chat-input {
+  width: 800px;
+}
+
+.username-input {
+  z-index: 1;
+}
