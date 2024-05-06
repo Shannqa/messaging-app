@@ -24,6 +24,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
+    credentials: true,
   },
 });
 /**
@@ -57,17 +58,19 @@ function normalizePort(val) {
 /* socket */
 let users = [];
 io.on("connection", (socket) => {
-  console.log("a user connected, id:", socket.id);
-  socket.on("newUser", (data) => {
-    users.push(data);
-    io.emit("newUserResponse", users);
-  })
+  const username = socket.handshake.query.username;
+  users.push({ username: username, socketID: socket.id });
+  console.log(`a user connected, username: ${username}, id: ${socket.id}`);
+
+  io.emit("getUsers", users);
+
   socket.on("message", (data) => {
     io.emit("messageResponse", data);
-    console.log(data);
   });
   socket.on("disconnect", () => {
-    console.log("user disconnected");
+    users = users.filter((user) => user.socketID !== socket.id);
+    io.emit("newUserResponse", users);
+    socket.disconnect();
   });
 });
 

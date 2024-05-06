@@ -6,12 +6,16 @@ import React from "react";
 import "../styles/main.css";
 // import ErrorModal from "./ErrorModal.jsx";
 import { io } from "socket.io-client";
-const ioSocket = io.connect("http://localhost:3000");
+const ioSocket = io.connect("http://localhost:3000", {
+  withCredentials: true,
+});
 
 export const AppContext = createContext({
   socket: "",
   username: "",
   setUsername: () => {},
+  users: [],
+  setUsers: () => {},
   // token: "",
   // setToken: () => {},
   // error: "",
@@ -23,6 +27,7 @@ function Root() {
   const [username, setUsername] = useState(
     localStorage.getItem("username") || null
   );
+  const [users, setUsers] = useState([]);
 
   // const [loading, setLoading] = useState();
   // const [error, setError] = useState(null);
@@ -58,6 +63,8 @@ function Root() {
         socket,
         username,
         setUsername,
+        users,
+        setUsers,
         // token,
         // setToken,
         // error,

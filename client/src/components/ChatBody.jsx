@@ -15,9 +15,9 @@ function ChatBody() {
 
   return (
     <div className="chat-body">
-      {messages.map((msg) => {
+      {messages.map((msg, index) => {
         return (
-          <p key={msg.socketID}>
+          <p key={index}>
             {msg.username}: {msg.text}
           </p>
         );

@@ -4,26 +4,17 @@ import React from "react";
 
 // import styles from "../styles/Home.module.css";
 
-function ChatTabs() {
-  const { socket, user } = useContext(AppContext);
-  const [users, setUsers] = useState([]);
+function ChatUserList() {
+  const { socket, users, setUsers } = useContext(AppContext);
 
-  useEffect(() => {
-    socket.on(
-      "newUserResponse",
-      (data) => {
-        setUsers(data);
-      },
-      [socket, users]
-    );
-  });
   return (
-    <div className="chat-tabs">
-      {tabs.map((tab, index) => {
-        return <button key={index}>{tab}</button>;
+    <div className="chat-userlist">
+      <p>Online users:</p>
+      {users.map((user, index) => {
+        return <p key={user.socketID}>{user.username}</p>;
       })}
     </div>
   );
 }
 
-export default ChatTabs;
+export default ChatUserList;
