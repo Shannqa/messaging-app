@@ -10,8 +10,8 @@ const ioSocket = io.connect("http://localhost:3000");
 
 export const AppContext = createContext({
   socket: "",
-
-  // setUser: () => {},
+  username: "",
+  setUser: () => {},
   // token: "",
   // setToken: () => {},
   // error: "",
@@ -20,7 +20,8 @@ export const AppContext = createContext({
 
 function Root() {
   const socket = ioSocket;
-  // const [user, setUser] = useState(null);
+  const [username, setUsername] = useState(localStorage.getItem("username") || "Anonymous");
+
   // const [loading, setLoading] = useState();
   // const [error, setError] = useState(null);
   // const [token, setToken] = useState(null);
@@ -53,7 +54,8 @@ function Root() {
     <AppContext.Provider
       value={{
         socket,
-        // setUser,
+        username,
+        setUser,
         // token,
         // setToken,
         // error,

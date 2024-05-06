@@ -55,9 +55,13 @@ function normalizePort(val) {
 }
 
 /* socket */
+let users = [];
 io.on("connection", (socket) => {
   console.log("a user connected, id:", socket.id);
-
+  socket.on("newUser", (data) => {
+    users.push(data);
+    io.emit("newUserResponse", users);
+  })
   socket.on("message", (data) => {
     io.emit("messageResponse", data);
     console.log(data);

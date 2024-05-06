@@ -5,13 +5,17 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function Client() {
-  const { socket } = useContext(AppContext);
+  const { socket, username } = useContext(AppContext);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     socket.on("messageResponse", (data) => setMessages([...messages, data]));
   }, [socket, messages]);
+  
+  useEffect(() => {
+    socket.emit("newUser", {username: username, socketID: socked.id});
+  }, []);
 
   function handleSendMessage(e) {
     e.preventDefault();
