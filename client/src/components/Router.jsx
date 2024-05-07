@@ -3,7 +3,7 @@ import React from "react";
 import Root from "./Root.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 // import Placeholder from "./Placeholder.jsx";
-// import Login from "./Login.jsx";
+import Login from "./Login.jsx";
 import Home from "./Home.jsx";
 // import Account from "./Account.jsx";
 
@@ -18,10 +18,10 @@ function Router() {
           index: true,
           element: <Home />,
         },
-        // {
-        //   path: "/login",
-        //   element: <Login />,
-        // },
+        {
+          path: "/login",
+          element: <Login />,
+        },
         // {
         //   path: "/account",
         //   element: <Account />,

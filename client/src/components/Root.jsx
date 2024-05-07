@@ -12,27 +12,27 @@ const ioSocket = io.connect("http://localhost:3000", {
 
 export const AppContext = createContext({
   socket: "",
-  username: "",
-  setUsername: () => {},
+  user: "",
+  setUser: () => {},
   users: [],
   setUsers: () => {},
-  // token: "",
-  // setToken: () => {},
+  token: "",
+  setToken: () => {},
   // error: "",
   // setError: () => {},
 });
 
 function Root() {
   const socket = ioSocket;
-  const [username, setUsername] = useState(
-    localStorage.getItem("username") || null
-  );
+  // const [username, setUsername] = useState(
+  //   localStorage.getItem("username") || null
+  // );
   const [users, setUsers] = useState([]);
-
+  const [user, setUser] = useState(null);
   // const [loading, setLoading] = useState();
   // const [error, setError] = useState(null);
-  // const [token, setToken] = useState(null);
-  /*
+  const [token, setToken] = useState(null);
+
   // verify token on refresh
   useEffect(() => {
     const storageToken = localStorage.getItem("accessToken");
@@ -56,17 +56,17 @@ function Root() {
       console.log("not log");
     }
   }, [token]);
-*/
+
   return (
     <AppContext.Provider
       value={{
         socket,
-        username,
-        setUsername,
+        user,
+        setUser,
         users,
         setUsers,
-        // token,
-        // setToken,
+        token,
+        setToken,
         // error,
         // setError,
       }}

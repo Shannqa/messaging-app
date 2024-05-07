@@ -6,13 +6,10 @@ import __dirname from "./utils/dirname.js";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import indexRouter from "./routes/indexRouter.js";
+import authRouter from "./routes/authRouter.js";
 import io from "./bin/www.js";
-
+import connectDB from "./config/db.js";
 const app = express();
-
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -20,6 +17,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+connectDB();
+
+app.use("/api/auth", authRouter);
 app.use("/", indexRouter);
 
 // catch 404 and forward to error handler
