@@ -4,8 +4,9 @@ import Root from "./Root.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 // import Placeholder from "./Placeholder.jsx";
 import Login from "./Login.jsx";
+import Signup from "./Signup.jsx";
 import Home from "./Home.jsx";
-// import Account from "./Account.jsx";
+import Account from "./Account.jsx";
 
 function Router() {
   const router = createBrowserRouter([
@@ -22,14 +23,14 @@ function Router() {
           path: "/login",
           element: <Login />,
         },
-        // {
-        //   path: "/account",
-        //   element: <Account />,
-        // },
-        // {
-        //   path: "/posts/add",
-        //   element: <AddPost />,
-        // },
+        {
+          path: "/signup",
+          element: <Signup />,
+        },
+        {
+          path: "/account",
+          element: <Account />,
+        },
       ],
     },
   ]);

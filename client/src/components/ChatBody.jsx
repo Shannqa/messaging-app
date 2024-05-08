@@ -5,7 +5,7 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatBody() {
-  const { socket, username } = useContext(AppContext);
+  const { socket } = useContext(AppContext);
 
   const [messages, setMessages] = useState([]);
 
@@ -18,7 +18,7 @@ function ChatBody() {
       {messages.map((msg, index) => {
         return (
           <p key={index}>
-            {msg.username}: {msg.text}
+            {msg.user}: {msg.text}
           </p>
         );
       })}

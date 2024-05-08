@@ -58,9 +58,9 @@ function normalizePort(val) {
 /* socket */
 let users = [];
 io.on("connection", (socket) => {
-  const username = socket.handshake.query.username;
-  users.push({ username: username, socketID: socket.id });
-  console.log(`a user connected, username: ${username}, id: ${socket.id}`);
+  const user = socket.handshake.query.user;
+  users.push({ user: user, socketID: socket.id });
+  console.log(`a user connected, username: ${user}, id: ${socket.id}`);
 
   io.emit("getUsers", users);
 

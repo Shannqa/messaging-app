@@ -1,16 +1,14 @@
 import express from "express";
 import {
-  login_get,
   login_post,
   check,
-  signup_get,
   signup_post,
   logout_get,
-  prot,
 } from "../controllers/auth_controller.js";
 import passport from "passport";
 import { LocalAuth, JwtAuth, authJWT } from "../config/auth.js";
 import User from "../models/userSchema.js";
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 
 const router = express.Router();
 
@@ -32,12 +30,9 @@ passport.deserializeUser(async (id, done) => {
 });
 
 router.post("/check", verifyToken, authJWT, check);
-router.get("/login", login_get);
 router.post("/login", login_post);
-router.get("/signup", signup_get);
 router.post("/signup", signup_post);
 router.get("/logout", logout_get);
-router.get("/prot", authJWT, prot);
 
 function verifyToken(req, res, next) {
   // get auth header value

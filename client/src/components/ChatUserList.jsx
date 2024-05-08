@@ -11,7 +11,7 @@ function ChatUserList() {
     <div className="chat-userlist">
       <p>Online users:</p>
       {users.map((user, index) => {
-        return <p key={user.socketID}>{user.username}</p>;
+        return <p key={user.socketID}>{user.user}</p>;
       })}
     </div>
   );

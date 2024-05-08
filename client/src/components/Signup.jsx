@@ -1,13 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { AppContext } from "./Root.jsx";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/Login.module.css";
 
-function Login() {
+function Signup() {
   const { user, setUser, token, setToken } = useContext(AppContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [logged, setLogged] = useState(null);
   const [usernameError, setUsernameError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const navigate = useNavigate();
@@ -35,7 +34,8 @@ function Login() {
       return true;
     }
   }
-  // log in
+
+  // sign up
   function handleSubmit(e) {
     e.preventDefault();
     const nameCheck = checkUsername();
@@ -44,7 +44,7 @@ function Login() {
     if (!nameCheck || !passCheck) {
       return;
     }
-    fetch("/api/auth/login", {
+    fetch("/api/auth/signup", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -61,25 +61,29 @@ function Login() {
           setUser(body.user.username);
           localStorage.setItem("accessToken", body.jwt.token);
           setToken(body.jwt.token);
-          setLogged(true);
           setUsername("");
-          navigate("/");
+          setPassword("");
+          navigate("/account");
         } else {
           // there are errors
-          if (body.message === "Incorrect username") {
-            setUsernameError("Wrong username.");
-          } else if (body.message === "Incorrect password") {
-            setPasswordError("Wrong password.");
+          setUsername(body.username);
+          setPassword(body.password);
+          if (body.errors) {
+            body.errors.forEach((err) => {
+              if (err.path === "username") {
+                setUsernameError(err.msg);
+              } else if (err.path === "password") {
+                setPasswordError(err.msg);
+              }
+            });
           }
-          setLogged(false);
         }
-        setPassword("");
       });
   }
 
   return (
     <form onSubmit={(e) => handleSubmit(e)} className={styles.login}>
-      <h2>Log in</h2>
+      <h2>Sign up</h2>
       <label htmlFor="username">Username</label>
       <input
         className={usernameError && styles.inputError}
@@ -107,11 +111,8 @@ function Login() {
       />
       <p className={styles.error}>{passwordError}</p>
       <button type="submit">Submit</button>
-      <p>
-        No account? <Link to="/signup">Sign up</Link>
-      </p>
     </form>
   );
 }
 
-export default Login;
+export default Signup;

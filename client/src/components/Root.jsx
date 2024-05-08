@@ -6,7 +6,7 @@ import React from "react";
 import "../styles/main.css";
 // import ErrorModal from "./ErrorModal.jsx";
 import { io } from "socket.io-client";
-const ioSocket = io.connect("http://localhost:3000", {
+const ioSocket = io.connect("http://localhost:3003", {
   withCredentials: true,
 });
 
@@ -24,11 +24,9 @@ export const AppContext = createContext({
 
 function Root() {
   const socket = ioSocket;
-  // const [username, setUsername] = useState(
-  //   localStorage.getItem("username") || null
-  // );
-  const [users, setUsers] = useState([]);
   const [user, setUser] = useState(null);
+  const [users, setUsers] = useState([]);
+
   // const [loading, setLoading] = useState();
   // const [error, setError] = useState(null);
   const [token, setToken] = useState(null);

@@ -1,5 +1,6 @@
 import createError from "http-errors";
 import express from "express";
+import session from "express-session";
 import cors from "cors";
 import path from "path";
 import __dirname from "./utils/dirname.js";
@@ -9,6 +10,7 @@ import indexRouter from "./routes/indexRouter.js";
 import authRouter from "./routes/authRouter.js";
 import io from "./bin/www.js";
 import connectDB from "./config/db.js";
+import MongoStore from "connect-mongo";
 const app = express();
 
 app.use(logger("dev"));
@@ -18,6 +20,19 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 connectDB();
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: process.env.DB_STRING }),
+  })
+);
+
+// view engine setup
+app.set("views", "views");
+app.set("view engine", "ejs");
 
 app.use("/api/auth", authRouter);
 app.use("/", indexRouter);

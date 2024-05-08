@@ -5,7 +5,7 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatInput() {
-  const { socket, username } = useContext(AppContext);
+  const { socket, user } = useContext(AppContext);
   const [message, setMessage] = useState("");
 
   function handleSendMessage(e) {
@@ -13,7 +13,7 @@ function ChatInput() {
     socket.emit("message", {
       text: message,
       socketID: socket.id,
-      username: username,
+      user: user,
     });
     setMessage("");
   }
