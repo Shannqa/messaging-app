@@ -5,16 +5,24 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatInput() {
-  const { socket, user } = useContext(AppContext);
+  const { socket, user, currentTab } = useContext(AppContext);
   const [message, setMessage] = useState("");
 
   function handleSendMessage(e) {
     e.preventDefault();
-    socket.emit("message", {
-      text: message,
-      socketID: socket.id,
-      user: user,
-    });
+    if (currentTab === "All") {
+      socket.emit("message", {
+        text: message,
+        socketID: socket.id,
+        user: user,
+      });
+    } else {
+      socket.emit("private message", {
+        text: message,
+        to: currentTab,
+      });
+    }
+
     setMessage("");
   }
 

@@ -7,8 +7,10 @@
 .client {
   display: grid;
   grid-template-areas:
+    "tabs userlist"
     "body userlist"
-    "input userlist";
+    "body userlist"
+    "input buttons";
 }
 
 .chat-body {
@@ -40,4 +42,20 @@
   padding: 4px;
   grid-area: userlist;
   border: 1px grey solid;
+}
+
+.chat-tabs {
+  grid-area: tabs;
+}
+
+.chat-tabs > * {
+  padding: 4px 8px;
+}
+
+.chat-buttons {
+  grid-area: buttons;
+}
+
+.chat-buttons > * {
+  padding: 4px 8px;
 }

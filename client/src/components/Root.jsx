@@ -8,6 +8,7 @@ import "../styles/main.css";
 import { io } from "socket.io-client";
 const ioSocket = io.connect("http://localhost:3003", {
   withCredentials: true,
+  autoConnect: false,
 });
 
 export const AppContext = createContext({
@@ -18,6 +19,10 @@ export const AppContext = createContext({
   setUsers: () => {},
   token: "",
   setToken: () => {},
+  openTabs: [],
+  setOpenTabs: () => {},
+  currentTab: "",
+  setCurrentTab: () => {},
   // error: "",
   // setError: () => {},
 });
@@ -26,7 +31,8 @@ function Root() {
   const socket = ioSocket;
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState([]);
-
+  const [openTabs, setOpenTabs] = useState(["All"]);
+  const [currentTab, setCurrentTab] = useState("All");
   // const [loading, setLoading] = useState();
   // const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
@@ -65,6 +71,10 @@ function Root() {
         setUsers,
         token,
         setToken,
+        openTabs,
+        setOpenTabs,
+        currentTab,
+        setCurrentTab,
         // error,
         // setError,
       }}

@@ -58,18 +58,43 @@ function normalizePort(val) {
 /* socket */
 let users = [];
 io.on("connection", (socket) => {
+  socket.join(socket.id);
   const user = socket.handshake.query.user;
-  users.push({ user: user, socketID: socket.id });
+  users.push({ user: user, socketId: socket.id });
   console.log(`a user connected, username: ${user}, id: ${socket.id}`);
+  socket.broadcast.emit("connectionResponse", {
+    user: "Socket",
+    text: `New user connected: ${user}`,
+  });
 
   io.emit("getUsers", users);
 
   socket.on("message", (data) => {
     io.emit("messageResponse", data);
   });
+
+  socket.on("private message", ({ text, to }) => {
+    const [user] = users.filter((user) => user.user === to);
+    console.log(user);
+    console.log(text);
+    console.log(user.socketId);
+    const [from] = users.filter((user) => user.socketId === socket.id);
+
+    // send the message to self
+    io.to(socket.id).emit("private message response", {
+      text: text,
+      from: from.user,
+    });
+    // and then, send the message to the recipient
+    io.to(user.socketId).emit("private message response", {
+      text: text,
+      from: from.user,
+    });
+  });
+
   socket.on("disconnect", () => {
     users = users.filter((user) => user.socketID !== socket.id);
-    io.emit("newUserResponse", users);
+    io.emit("getUsers", users);
     socket.disconnect();
   });
 });

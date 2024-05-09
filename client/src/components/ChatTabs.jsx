@@ -5,13 +5,21 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatTabs() {
-  const { socket } = useContext(AppContext);
-  const [tabs, setTabs] = useState(["All"]);
+  const { socket, openTabs, setOpenTabs, currentTab, setCurrentTab } =
+    useContext(AppContext);
+
+  function changeTab(e) {
+    setCurrentTab(e.target.innerText);
+  }
 
   return (
     <div className="chat-tabs">
-      {tabs.map((tab, index) => {
-        return <button key={index}>{tab}</button>;
+      {openTabs.map((tab, index) => {
+        return (
+          <button key={index} onClick={(e) => changeTab(e)}>
+            {tab}
+          </button>
+        );
       })}
     </div>
   );

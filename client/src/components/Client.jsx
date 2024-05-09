@@ -5,6 +5,7 @@ import ChatBody from "./ChatBody.jsx";
 import ChatInput from "./ChatInput.jsx";
 import ChatTabs from "./ChatTabs.jsx";
 import ChatUserList from "./ChatUserList.jsx";
+import Buttons from "./Buttons.jsx";
 // import styles from "../styles/Home.module.css";
 
 function Client() {
@@ -23,6 +24,10 @@ function Client() {
     };
   }, []);
 
+  socket.onAny((event, ...args) => {
+    console.log(event, args);
+  });
+
   useEffect(() => {
     socket.on("getUsers", (data) => {
       setUsers(data);
@@ -36,9 +41,11 @@ function Client() {
 
   return (
     <div className="client">
+      <ChatTabs />
       <ChatBody />
       <ChatInput />
       <ChatUserList />
+      <Buttons />
     </div>
   );
 }

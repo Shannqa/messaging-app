@@ -63,7 +63,7 @@ function Login() {
           setToken(body.jwt.token);
           setLogged(true);
           setUsername("");
-          navigate("/");
+          navigate("/chat");
         } else {
           // there are errors
           if (body.message === "Incorrect username") {

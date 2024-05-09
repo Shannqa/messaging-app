@@ -7,6 +7,7 @@ import Login from "./Login.jsx";
 import Signup from "./Signup.jsx";
 import Home from "./Home.jsx";
 import Account from "./Account.jsx";
+import Client from "./Client.jsx";
 
 function Router() {
   const router = createBrowserRouter([
@@ -30,6 +31,10 @@ function Router() {
         {
           path: "/account",
           element: <Account />,
+        },
+        {
+          path: "/chat",
+          element: <Client />,
         },
       ],
     },
