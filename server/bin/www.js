@@ -71,17 +71,18 @@ io.on("connection", (socket) => {
   // join own private message room
   socket.join(socket.id);
   const username = socket.handshake.query.user;
-  users.push({ name: user, socketId: socket.id });
+  users.push({ name: username, socketId: socket.id });
   console.log(`a user connected, username: ${username}, id: ${socket.id}`);
-  
-  socket.broadcast.emit("connectionResponse", {
-    user: "Socket",
+
+  socket.emit("connectionResponse", {
+    name: "Server",
     text: `User connected: ${username}`,
-    users: users
+    users: users,
   });
 
   // message to "All" room
   socket.on("publicMessage", (data) => {
+    console.log(data);
     io.emit("publicMessageResponse", data);
   });
 
@@ -102,17 +103,15 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    users = users.filter((user) => user.socketID !== socket.id);
-    socket.broadcast.emit("disconnectResponse", {
-    user: "Socket",
-    text: `User disconnected: ${user}`,
-    users: users
-  });
+    users = users.filter((user) => user.socketId !== socket.id);
+    socket.emit("disconnectResponse", {
+      name: "Server",
+      text: `User disconnected: ${username}`,
+      users: users,
+    });
     socket.disconnect();
   });
 });
-
-
 
 /**
  * Event listener for HTTP server "error" event.

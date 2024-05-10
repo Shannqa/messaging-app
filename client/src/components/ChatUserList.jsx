@@ -19,12 +19,12 @@ function ChatUserList() {
       {users.map((user, index) => {
         return (
           <p
-            key={user.socketID}
+            key={user.socketId}
             onClick={(e) => {
               openChat(e);
             }}
           >
-            {user.user}
+            {user.name}
           </p>
         );
       })}

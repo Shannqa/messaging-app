@@ -13,14 +13,14 @@ function ChatInput() {
     if (currentTab === "All") {
       socket.emit("publicMessage", {
         name: user,
-        socketetId: socket.id,
+        socketId: socket.id,
         text: message,
       });
     } else {
       socket.emit("privateMessage", {
         text: message,
         to: currentTab,
-        from: user
+        from: user,
       });
     }
 

@@ -24,7 +24,7 @@ export const AppContext = createContext({
   currentTab: "",
   setCurrentTab: () => {},
   allTab: "",
-  setAllTab: () => {}
+  setAllTab: () => {},
   // error: "",
   // setError: () => {},
 });
@@ -38,6 +38,7 @@ function Root() {
   // const [loading, setLoading] = useState();
   // const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
+  const [allTab, setAllTab] = useState([]);
 
   // verify token on refresh
   useEffect(() => {
@@ -78,7 +79,7 @@ function Root() {
         currentTab,
         setCurrentTab,
         allTab,
-        setAllTab
+        setAllTab,
         // error,
         // setError,
       }}
