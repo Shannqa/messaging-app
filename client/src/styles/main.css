@@ -59,3 +59,7 @@
 .chat-buttons > * {
   padding: 4px 8px;
 }
+
+.own-message {
+  background-color: purple;
+}

@@ -5,7 +5,7 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatBody() {
-  const { socket } = useContext(AppContext);
+  const { socket, user } = useContext(AppContext);
 
   const [messages, setMessages, currentTab] = useState([]);
 
@@ -32,7 +32,12 @@ function ChatBody() {
             {msg.user === "Socket" ? (
               <p key={index}>{msg.text}</p>
             ) : (
-              <p key={index}>
+              <p
+                key={index}
+                className={
+                  msg.user === user.user ? "own-message" : "other-message"
+                }
+              >
                 {msg.user}: {msg.text}
               </p>
             )}

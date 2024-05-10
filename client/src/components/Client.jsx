@@ -24,10 +24,6 @@ function Client() {
     };
   }, []);
 
-  socket.onAny((event, ...args) => {
-    console.log(event, args);
-  });
-
   useEffect(() => {
     socket.on("getUsers", (data) => {
       setUsers(data);

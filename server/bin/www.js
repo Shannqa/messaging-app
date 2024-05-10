@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 
+import { log } from "console";
 import app from "../app.js";
 import debug from "debug";
 import http from "http";
@@ -68,6 +69,11 @@ io.on("connection", (socket) => {
   });
 
   io.emit("getUsers", users);
+  const allSockets = io.fetchSockets().then((sock) => {
+    for (const ss of sock) {
+      console.log(ss);
+    }
+  });
 
   socket.on("message", (data) => {
     io.emit("messageResponse", data);
@@ -75,9 +81,6 @@ io.on("connection", (socket) => {
 
   socket.on("private message", ({ text, to }) => {
     const [user] = users.filter((user) => user.user === to);
-    console.log(user);
-    console.log(text);
-    console.log(user.socketId);
     const [from] = users.filter((user) => user.socketId === socket.id);
 
     // send the message to self
