@@ -9,19 +9,8 @@ import Buttons from "./Buttons.jsx";
 // import styles from "../styles/Home.module.css";
 
 function Client() {
-  const { socket, users, setUsers, user, allTab, setAllTab } =
+  const { socket, users, setUsers, user, allTab, setAllTab, token } =
     useContext(AppContext);
-  const [messages, setMessages] = useState([]);
-
-  // socket connection
-  useEffect(() => {
-    socket.io.opts.query = { user };
-    socket.connect();
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [socket]);
 
   useEffect(() => {
     socket.on("publicMessageResponse", ({ name, socketId, text }) => {

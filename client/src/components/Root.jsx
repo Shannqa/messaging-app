@@ -56,12 +56,18 @@ function Root() {
           if (body.success) {
             setUser(body.user);
             setToken(storageToken);
+            socket.io.opts.query = { user: body.user };
+            socket.connect();
           }
         })
         .catch((err) => console.log(err));
     } else {
       console.log("not log");
     }
+
+    return () => {
+      socket.disconnect();
+    };
   }, [token]);
 
   return (
