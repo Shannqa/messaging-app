@@ -11,15 +11,16 @@ function ChatInput() {
   function handleSendMessage(e) {
     e.preventDefault();
     if (currentTab === "All") {
-      socket.emit("message", {
+      socket.emit("publicMessage", {
+        name: user,
+        socketetId: socket.id,
         text: message,
-        socketID: socket.id,
-        user: user,
       });
     } else {
-      socket.emit("private message", {
+      socket.emit("privateMessage", {
         text: message,
         to: currentTab,
+        from: user
       });
     }
 

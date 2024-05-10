@@ -5,7 +5,7 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatBody() {
-  const { socket, user } = useContext(AppContext);
+  const { socket, user, currentTab, allTab } = useContext(AppContext);
 
   const [messages, setMessages, currentTab] = useState([]);
 
@@ -23,6 +23,46 @@ function ChatBody() {
       setMessages([...messages, { user: from, text: text }]);
     });
   }, [socket, messages]);
+
+
+const allMsgs = allTab.map(msg => {
+  if (msg.name === "Server") {
+    // announcement from the server
+    return(<p className="msg-server">{msg.text}</p>)
+  } else {
+    // user message
+    
+    return(<p className="msg-own">
+      <span>{msg.name}</span>
+    </p>)
+  }
+  return(
+    <p></p>
+    )
+  
+})
+
+
+
+
+if (currentTab === "All") {
+  return(
+    <div>
+    {allTab.map((msg, index) => {
+      return(
+      <p className={msg.name === user ? "own-message" : "other-message"}>
+        <span>{msg.name}</span>:
+        <span>{msg.text}</span>
+      </p>
+      
+      )
+    })}
+    </div>
+  )
+}
+// all - 3 states
+// own message, other user's message, announcement
+
 
   return (
     <div className="chat-body">

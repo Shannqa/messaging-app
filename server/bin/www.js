@@ -58,38 +58,44 @@ function normalizePort(val) {
 
 /* socket */
 let users = [];
+/*
+users = [
+  {
+    name: "asia",
+    socketId: "xxxxxx"
+  },
+]
+*/
+
 io.on("connection", (socket) => {
+  // join own private message room
   socket.join(socket.id);
-  const user = socket.handshake.query.user;
-  users.push({ user: user, socketId: socket.id });
-  console.log(`a user connected, username: ${user}, id: ${socket.id}`);
+  const username = socket.handshake.query.user;
+  users.push({ name: user, socketId: socket.id });
+  console.log(`a user connected, username: ${username}, id: ${socket.id}`);
+  
   socket.broadcast.emit("connectionResponse", {
     user: "Socket",
-    text: `New user connected: ${user}`,
+    text: `User connected: ${username}`,
+    users: users
   });
 
-  io.emit("getUsers", users);
-  const allSockets = io.fetchSockets().then((sock) => {
-    for (const ss of sock) {
-      console.log(ss);
-    }
+  // message to "All" room
+  socket.on("publicMessage", (data) => {
+    io.emit("publicMessageResponse", data);
   });
 
-  socket.on("message", (data) => {
-    io.emit("messageResponse", data);
-  });
-
-  socket.on("private message", ({ text, to }) => {
+  socket.on("privateMessage", ({ text, to }) => {
     const [user] = users.filter((user) => user.user === to);
     const [from] = users.filter((user) => user.socketId === socket.id);
 
     // send the message to self
-    io.to(socket.id).emit("private message response", {
+    io.to(socket.id).emit("privateMessageResponse", {
       text: text,
       from: from.user,
     });
     // and then, send the message to the recipient
-    io.to(user.socketId).emit("private message response", {
+    io.to(user.socketId).emit("privateMessageResponse", {
       text: text,
       from: from.user,
     });
@@ -97,10 +103,16 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     users = users.filter((user) => user.socketID !== socket.id);
-    io.emit("getUsers", users);
+    socket.broadcast.emit("disconnectResponse", {
+    user: "Socket",
+    text: `User disconnected: ${user}`,
+    users: users
+  });
     socket.disconnect();
   });
 });
+
+
 
 /**
  * Event listener for HTTP server "error" event.

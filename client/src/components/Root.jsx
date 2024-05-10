@@ -23,6 +23,8 @@ export const AppContext = createContext({
   setOpenTabs: () => {},
   currentTab: "",
   setCurrentTab: () => {},
+  allTab: "",
+  setAllTab: () => {}
   // error: "",
   // setError: () => {},
 });
@@ -31,7 +33,7 @@ function Root() {
   const socket = ioSocket;
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState([]);
-  const [openTabs, setOpenTabs] = useState(["All"]);
+  const [openTabs, setOpenTabs] = useState([]);
   const [currentTab, setCurrentTab] = useState("All");
   // const [loading, setLoading] = useState();
   // const [error, setError] = useState(null);
@@ -75,6 +77,8 @@ function Root() {
         setOpenTabs,
         currentTab,
         setCurrentTab,
+        allTab,
+        setAllTab
         // error,
         // setError,
       }}
