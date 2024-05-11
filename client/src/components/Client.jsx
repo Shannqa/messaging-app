@@ -30,13 +30,11 @@ function Client() {
 
   // other socket events
   useEffect(() => {
-    /*
-    socket.on("messageResponse", ({data}) => setMessages([...messages, data]));
-    */
-
-    socket.on("privResp", ({ to, from, text }) => {
+    // private messaging
+    socket.on("privateMsgResponse", ({ to, from, text }) => {
       console.log({ to, from, text });
       if (to === user && from === user) {
+        // message to yourself
         const isTabOpen = openTabs.some((tab) => tab.name === user);
         console.log(isTabOpen);
         if (isTabOpen) {
@@ -50,147 +48,56 @@ function Client() {
                 : tab
             )
           );
-
-          // return {
-          //   ...tab,
-          //   messages: [...messages, { name: user, text: text }], // messages not defined
-          // };
-          // tab.map((nest) => {
-          //   return {
-          //     ...nest,
-          //     messages: [],
-          //   };
-          // ...nest, nest.messages: [...tab.messages, {name: user, text: text}])
-          // });
-
-          //tab.messages = [...tab.messages, {name: user, text: text}];
-          // gotta return the rest of the object, not just messages though
+        } else {
+          // just in case the tab closed before receiving the msg
+          setOpenTabs([
+            ...openTabs,
+            { name: user, messages: [{ name: user, text: text }] },
+          ]);
         }
-      }
-    });
+      } else if (to === user) {
+        // message to the user from someone else
+        const isTabOpen = openTabs.some((tab) => tab.name === from);
 
-    socket.on("fromAndToAsia", ({ text, to, from }) => {
-      console.log({ text, to, from });
-      setOpenTabs(
-        openTabs.map((tab) => {
-          if (tab.name === "asia") {
-            tab.messages;
-          }
-        })
-      );
-    });
-    socket.on(
-      "privateMessageOwn",
-      ({ text, to, from }) => {
-        console.log("to", to, "from", from, "text", text);
-        if (from === user) {
-          console.log("from me to someone else");
-          // tab == to
-          const isTabOpen = openTabs.some((tab) => tab.name === to);
-
-          if (isTabOpen) {
-            setOpenTabs(
-              openTabs.map((tab) => {
-                if (tab.name === to) {
-                  return {
+        if (isTabOpen) {
+          setOpenTabs(
+            openTabs.map((tab) =>
+              tab.name === from
+                ? {
                     ...tab,
                     messages: [...tab.messages, { name: from, text: text }],
-                  };
-                } else {
-                  return tab;
-                }
-              })
-            );
-          } else {
-            setOpenTabs([
-              ...openTabs,
-              {
-                name: to,
-                messages: [{ name: from, text: text }],
-              },
-            ]);
-          }
+                  }
+                : tab
+            )
+          );
+        } else {
+          // open the tab from the sender, add the first message
+          setOpenTabs([
+            ...openTabs,
+            { name: from, messages: [{ name: from, text: text }] },
+          ]);
         }
+      } else if (from === user) {
+        // message from the user to someone else
+        const isTabOpen = openTabs.some((tab) => tab.name === to);
 
-        if (to === user) {
-          const isTabOpen = openTabs.some((tab) => tab.name === from);
-          console.log("to meee");
-          if (isTabOpen) {
-            setOpenTabs(
-              openTabs.map((tab) => {
-                if (tab.name === from) {
-                  return [...tab.messages, { name: from, text: text }];
-                } else {
-                  return tab;
-                }
-              })
-            );
-          } else {
-            setOpenTabs([
-              ...openTabs,
-              {
-                name: from,
-                messages: [{ name: from, text: text }],
-              },
-            ]);
-          }
+        if (isTabOpen) {
+          setOpenTabs(
+            openTabs.map((tab) =>
+              tab.name === to
+                ? {
+                    ...tab,
+                    messages: [...tab.messages, { name: from, text: text }],
+                  }
+                : tab
+            )
+          );
+        } else {
+          setOpenTabs([
+            ...openTabs,
+            { name: to, messages: [{ name: from, text: text }] },
+          ]);
         }
-      }
-      // tab == from
-
-      // if it's an own msg, to
-      // tab == to
-      // from: text
-    );
-
-    socket.on("privateMessageElse", ({ text, to, from }) => {
-      // tab = from
-      // from:
-    });
-    socket.on("privateMessageSelfResp", ({ text, to, from }) => {
-      console.log(text, to, from);
-    });
-
-    socket.on("privateMessageResponse", ({ text, to, from }) => {
-      //if im sending a message to someone
-      /*
-      chatlist > open tab with "to"
-      current tab "to"
-      write message, from = my name, to = tab name
-      send message to socket, from me, to other person
-      socket responds - message is from me, to another person
-      so it ends up in another person's tab name, so i send, msg is in to
-
-
-      i receive a message from somebody else
-      socket sends to me, from other
-      open tab other
-      message from other, to me, shows up in tab other person's name, so in from
-
-      
-      
-      */
-
-      const isTabOpen = openTabs.some((tab) => tab.name === from);
-
-      if (isTabOpen) {
-        setOpenTabs(
-          openTabs.map((tab) => {
-            if (tab.name === from) {
-              return [...tab.messages, { name: from, text: text }];
-            } else {
-              return tab;
-            }
-          })
-        );
-      } else {
-        setOpenTabs([
-          ...openTabs,
-          {
-            name: from,
-            messages: [{ name: from, text: text }],
-          },
-        ]);
       }
     });
 

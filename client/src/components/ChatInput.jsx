@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { AppContext } from "./Root.jsx";
 import React from "react";
-
 // import styles from "../styles/Home.module.css";
 
 function ChatInput() {
@@ -17,27 +16,12 @@ function ChatInput() {
         text: message,
       });
     } else {
-      socket.emit("priv", {
+      socket.emit("privateMsg", {
         to: currentTab,
         from: user,
         text: message,
       });
     }
-
-    // else if (currentTab === user) {
-    //   socket.emit("privateMessageSelf", {
-    //     text: message,
-    //     to: user,
-    //     from: user,
-    //   });
-    // } else {
-    //   socket.emit("privateMessageOwn", {
-    //     text: message,
-    //     to: currentTab,
-    //     from: user,
-    //   });
-    // }
-
     setMessage("");
   }
 
