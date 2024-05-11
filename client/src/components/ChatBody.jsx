@@ -4,10 +4,23 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatBody() {
-  const { socket, user, currentTab, allTab, openTabs, setOpenTabs } =
-    useContext(AppContext);
+  const {
+    socket,
+    user,
+    currentTab,
+    allTab,
+    openTabs,
+    setOpenTabs,
+    lastMessageRef,
+  } = useContext(AppContext);
 
-  if (currentTab === "All") {
+  if (!currentTab) {
+    return (
+      <div className="chat-body">
+        <p>Error! Please refresh the page</p>
+      </div>
+    );
+  } else if (currentTab === "All") {
     return (
       <div className="chat-body">
         {allTab.map((msg, index) => {
@@ -31,6 +44,7 @@ function ChatBody() {
             );
           }
         })}
+        <div ref={lastMessageRef}></div>
       </div>
     );
   } else {
@@ -47,6 +61,7 @@ function ChatBody() {
             </p>
           );
         })}
+        <div ref={lastMessageRef}></div>
       </div>
     );
   }

@@ -19,6 +19,8 @@ function Client() {
     token,
     openTabs,
     setOpenTabs,
+    lastMessageRef,
+    currentTab,
   } = useContext(AppContext);
 
   useEffect(() => {
@@ -111,6 +113,16 @@ function Client() {
       setUsers(users);
     });
   }, [socket, allTab, users, openTabs]);
+
+  useEffect(() => {
+    // slowly scroll to the last message when receiving a new message
+    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [openTabs, allTab]);
+
+  useEffect(() => {
+    // instantly scroll to the last message when changing a tab
+    lastMessageRef.current?.scrollIntoView({ behavior: "instant" });
+  }, [currentTab]);
 
   return (
     <div className="client">

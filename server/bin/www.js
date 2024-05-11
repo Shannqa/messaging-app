@@ -74,7 +74,7 @@ io.on("connection", (socket) => {
   users.push({ name: username, socketId: socket.id });
   console.log(`a user connected, username: ${username}, id: ${socket.id}`);
 
-  socket.emit("connectionResponse", {
+  io.emit("connectionResponse", {
     name: "Server",
     text: `User connected: ${username}`,
     users: users,
@@ -96,7 +96,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     users = users.filter((user) => user.socketId !== socket.id);
-    socket.emit("disconnectResponse", {
+    io.emit("disconnectResponse", {
       name: "Server",
       text: `User disconnected: ${username}`,
       users: users,

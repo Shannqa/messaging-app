@@ -12,18 +12,38 @@ function ChatTabs() {
     setCurrentTab(tabName);
   }
 
+  function closeTab() {
+    const filteredTabs = openTabs.filter((tab) => tab.name !== currentTab);
+    console.log(filteredTabs);
+    setOpenTabs(filteredTabs);
+    setCurrentTab("All");
+  }
+
   return (
     <div className="chat-tabs">
-      <button key={"all"} onClick={() => changeTab("All")}>
-        All
-      </button>
-      {openTabs.map((tab, index) => {
-        return (
-          <button key={index} onClick={() => changeTab(tab.name)}>
-            {tab.name}
+      <div className="left">
+        <button className="button" key={"all"} onClick={() => changeTab("All")}>
+          All
+        </button>
+        {openTabs.map((tab, index) => {
+          return (
+            <button
+              className="button"
+              key={index}
+              onClick={() => changeTab(tab.name)}
+            >
+              {tab.name}
+            </button>
+          );
+        })}
+      </div>
+      <div className="right">
+        {currentTab !== "All" && (
+          <button className="cancel-button" onClick={closeTab}>
+            X
           </button>
-        );
-      })}
+        )}
+      </div>
     </div>
   );
 }

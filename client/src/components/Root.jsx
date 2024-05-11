@@ -1,8 +1,8 @@
-import { useState, useEffect, createContext, useReducer } from "react";
+import { useState, useEffect, createContext, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import React from "react";
-// import Header from "./Header.jsx";
-// import Footer from "./Footer.jsx";
+import Header from "./Header.jsx";
+import Footer from "./Footer.jsx";
 import "../styles/main.css";
 // import ErrorModal from "./ErrorModal.jsx";
 import { io } from "socket.io-client";
@@ -25,6 +25,7 @@ export const AppContext = createContext({
   setCurrentTab: () => {},
   allTab: "",
   setAllTab: () => {},
+  lastMessageRef: "",
   // error: "",
   // setError: () => {},
 });
@@ -39,7 +40,7 @@ function Root() {
   // const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
   const [allTab, setAllTab] = useState([]);
-
+  const lastMessageRef = useRef(null);
   // verify token on refresh
   useEffect(() => {
     const storageToken = localStorage.getItem("accessToken");
@@ -86,15 +87,16 @@ function Root() {
         setCurrentTab,
         allTab,
         setAllTab,
+        lastMessageRef,
         // error,
         // setError,
       }}
     >
       <div className="root">
-        {/* <Header /> */}
+        <Header />
         {/* {error && <ErrorModal message={error} />} */}
         <Outlet />
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </AppContext.Provider>
   );

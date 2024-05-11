@@ -33,7 +33,9 @@ function ChatInput() {
         placeholder="Write message..."
         onChange={(e) => setMessage(e.target.value)}
       ></input>
-      <button type="submit">Send</button>
+      <button className="button" type="submit">
+        Send
+      </button>
     </form>
   );
 }

@@ -29,6 +29,7 @@ function ChatUserList() {
       {users.map((user, index) => {
         return (
           <p
+            className="user"
             key={user.socketId}
             onClick={(e) => {
               openChat(user.name);

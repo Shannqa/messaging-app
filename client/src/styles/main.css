@@ -4,13 +4,33 @@
   margin: 0;
 }
 
+body {
+  background-color: #f6f6f6;
+}
+
+.root {
+  min-height: 90vh;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 40px;
+  justify-content: space-between;
+  padding: 24px 48px;
+  position: relative;
+}
+
 .client {
   display: grid;
   grid-template-areas:
-    "tabs userlist"
+    "tabs nothing"
     "body userlist"
     "body userlist"
     "input buttons";
+  justify-content: start;
+  border: 2px grey solid;
+  width: 1002px;
+  box-shadow: 2px 2px #f6f6f6;
+  background-color: #dadbed;
 }
 
 .chat-body {
@@ -19,17 +39,24 @@
   border: 1px grey solid;
   padding: 4px;
   grid-area: body;
+  background-color: #fdfdfd;
+  overflow-y: scroll;
+}
+
+.chat-input {
+  height: 28px;
+  grid-area: input;
 }
 
 .chat-input input {
   width: 700px;
-  height: 1.5rem;
-  grid-area: input;
+  height: 28px;
 }
 
 .chat-input button {
   width: 100px;
-  height: 1.5rem;
+  height: 28px;
+  cursor: pointer;
 }
 
 .username-input {
@@ -39,27 +66,83 @@
 .chat-userlist {
   height: 400px;
   width: 200px;
-  padding: 4px;
+  padding: 4px 0;
   grid-area: userlist;
   border: 1px grey solid;
+  background-color: #fdfdfd;
 }
 
 .chat-tabs {
   grid-area: tabs;
+  display: flex;
+  justify-content: space-between;
+  background-color: #dadbed;
 }
 
-.chat-tabs > * {
+.chat-tabs button {
   padding: 4px 8px;
+  cursor: pointer;
 }
 
 .chat-buttons {
   grid-area: buttons;
+  background-color: #dadbed;
 }
 
 .chat-buttons > * {
   padding: 4px 8px;
+  height: 28px;
+  cursor: pointer;
 }
 
 .own-message {
   background-color: purple;
+}
+
+.chat-userlist .user {
+  background-color: rgb(204 224 224);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.chat-userlist .user:hover {
+  background-color: rgb(130, 183, 183);
+}
+
+.chat-userlist .user:active {
+  background-color: rgb(173, 183, 130);
+}
+
+.button {
+  background-color: #abafea;
+}
+
+.button:hover {
+  background-color: #8285b5;
+}
+
+.button:active {
+  background-color: #b68f6a;
+}
+
+.button-cancel {
+  background-color: rgb(218, 142, 142);
+}
+
+.button-cancel:hover {
+  background-color: rgb(177, 111, 111);
+}
+
+.button-cancel:active {
+  background-color: #a57b54;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 8px;
 }
