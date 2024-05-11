@@ -5,12 +5,22 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatUserList() {
-  const { socket, users, setUsers, openTabs, setOpenTabs } =
-    useContext(AppContext);
+  const {
+    socket,
+    users,
+    setUsers,
+    openTabs,
+    setOpenTabs,
+    currentTab,
+    setCurrentTab,
+  } = useContext(AppContext);
 
-  function openChat(e) {
-    console.log(e.target.innerText);
-    setOpenTabs([...openTabs, e.target.innerText]);
+  function openChat(name) {
+    const isTabAlreadyOpen = openTabs.some((tab) => tab.name === name);
+    if (!isTabAlreadyOpen) {
+      setOpenTabs([...openTabs, { name: name, messages: [] }]);
+    }
+    setCurrentTab(name);
   }
 
   return (
@@ -21,7 +31,7 @@ function ChatUserList() {
           <p
             key={user.socketId}
             onClick={(e) => {
-              openChat(e);
+              openChat(user.name);
             }}
           >
             {user.name}

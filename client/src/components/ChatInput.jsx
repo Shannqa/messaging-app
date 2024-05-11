@@ -17,12 +17,26 @@ function ChatInput() {
         text: message,
       });
     } else {
-      socket.emit("privateMessage", {
-        text: message,
+      socket.emit("priv", {
         to: currentTab,
         from: user,
+        text: message,
       });
     }
+
+    // else if (currentTab === user) {
+    //   socket.emit("privateMessageSelf", {
+    //     text: message,
+    //     to: user,
+    //     from: user,
+    //   });
+    // } else {
+    //   socket.emit("privateMessageOwn", {
+    //     text: message,
+    //     to: currentTab,
+    //     from: user,
+    //   });
+    // }
 
     setMessage("");
   }

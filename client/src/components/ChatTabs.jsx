@@ -8,16 +8,19 @@ function ChatTabs() {
   const { socket, openTabs, setOpenTabs, currentTab, setCurrentTab } =
     useContext(AppContext);
 
-  function changeTab(e) {
-    setCurrentTab(e.target.innerText);
+  function changeTab(tabName) {
+    setCurrentTab(tabName);
   }
 
   return (
     <div className="chat-tabs">
+      <button key={"all"} onClick={() => changeTab("All")}>
+        All
+      </button>
       {openTabs.map((tab, index) => {
         return (
-          <button key={index} onClick={(e) => changeTab(e)}>
-            {tab}
+          <button key={index} onClick={() => changeTab(tab.name)}>
+            {tab.name}
           </button>
         );
       })}
