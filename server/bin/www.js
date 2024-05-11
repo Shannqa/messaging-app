@@ -9,6 +9,7 @@ import app from "../app.js";
 import debug from "debug";
 import http from "http";
 import { Server } from "socket.io";
+import sanitizeHtml from "sanitize-html";
 
 /**
  * Get port from environment and store in Express.
@@ -62,15 +63,22 @@ let users = [];
 users = [
   {
     name: "asia",
+    userId: "yyyy", - id from database
     socketId: "xxxxxx"
   },
 ]
 */
+// middleware
+io.use((socket, next) => {
+  next();
+});
 
+// socket
 io.on("connection", (socket) => {
   // join own private message room
   socket.join(socket.id);
-  const username = socket.handshake.query.user;
+  const username = sanitizeHtml(socket.handshake.query.user);
+  console.log(socket.handshake);
   users.push({ name: username, socketId: socket.id });
   console.log(`a user connected, username: ${username}, id: ${socket.id}`);
 
@@ -81,17 +89,29 @@ io.on("connection", (socket) => {
   });
 
   // message to "All" room
-  socket.on("publicMessage", (data) => {
-    console.log(data);
-    io.emit("publicMessageResponse", data);
+  socket.on("publicMessage", ({ name, socketId, text }) => {
+    const cleanName = sanitizeHtml(name);
+    const cleanId = sanitizeHtml(socketId);
+    const cleanText = sanitizeHtml(text);
+
+    io.emit("publicMessageResponse", {
+      name: cleanName,
+      socketId: cleanId,
+      text: cleanText,
+    });
   });
 
   socket.on("privateMsg", ({ to, from, text }) => {
+    const cleanTo = sanitizeHtml(to);
+    const cleanFrom = sanitizeHtml(from);
+    const cleanText = sanitizeHtml(text);
     const toUser = users.find((user) => user.name === to);
     // send socket event to the sender and receipient
-    io.to(socket.id)
-      .to(toUser.socketId)
-      .emit("privateMsgResponse", { to, from, text });
+    io.to(socket.id).to(toUser.socketId).emit("privateMsgResponse", {
+      to: cleanTo,
+      from: cleanFrom,
+      text: cleanText,
+    });
   });
 
   socket.on("disconnect", () => {

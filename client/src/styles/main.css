@@ -4,6 +4,10 @@
   margin: 0;
 }
 
+:root {
+  font-size: 18px;
+}
+
 body {
   background-color: #f6f6f6;
 }
@@ -22,7 +26,7 @@ body {
 .client {
   display: grid;
   grid-template-areas:
-    "tabs nothing"
+    "tabs buttons-top"
     "body userlist"
     "body userlist"
     "input buttons";
@@ -41,6 +45,7 @@ body {
   grid-area: body;
   background-color: #fdfdfd;
   overflow-y: scroll;
+  line-height: 1.5rem;
 }
 
 .chat-input {
@@ -84,9 +89,17 @@ body {
   cursor: pointer;
 }
 
+.chat-buttons-top button {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.chat-buttons-top {
+  grid-area: buttons-top;
+}
+
 .chat-buttons {
   grid-area: buttons;
-  background-color: #dadbed;
 }
 
 .chat-buttons > * {
@@ -115,6 +128,8 @@ body {
 
 .button {
   background-color: #abafea;
+  border: 1px #8285b5 solid;
+  font-size: 1rem;
 }
 
 .button:hover {
@@ -127,6 +142,8 @@ body {
 
 .button-cancel {
   background-color: rgb(218, 142, 142);
+  border: 1px #8285b5 solid;
+  font-size: 1rem;
 }
 
 .button-cancel:hover {

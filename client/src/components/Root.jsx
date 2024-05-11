@@ -6,9 +6,11 @@ import Footer from "./Footer.jsx";
 import "../styles/main.css";
 // import ErrorModal from "./ErrorModal.jsx";
 import { io } from "socket.io-client";
+let authToken = "zzz";
 const ioSocket = io.connect("http://localhost:3003", {
   withCredentials: true,
   autoConnect: false,
+  auth: { token: authToken },
 });
 
 export const AppContext = createContext({
@@ -58,6 +60,7 @@ function Root() {
             setUser(body.user);
             setToken(storageToken);
             socket.io.opts.query = { user: body.user };
+            authToken = storageToken;
             socket.connect();
           }
         })

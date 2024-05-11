@@ -6,6 +6,7 @@ import ChatInput from "./ChatInput.jsx";
 import ChatTabs from "./ChatTabs.jsx";
 import ChatUserList from "./ChatUserList.jsx";
 import Buttons from "./Buttons.jsx";
+import ButtonsTop from "./ButtonsTop.jsx";
 // import styles from "../styles/Home.module.css";
 
 function Client() {
@@ -25,7 +26,6 @@ function Client() {
 
   useEffect(() => {
     socket.on("publicMessageResponse", ({ name, socketId, text }) => {
-      console.log(allTab);
       setAllTab([...allTab, { name: name, text: text }]);
     });
   }, [allTab]);
@@ -127,6 +127,7 @@ function Client() {
   return (
     <div className="client">
       <ChatTabs />
+      <ButtonsTop />
       <ChatBody />
       <ChatInput />
       <ChatUserList />

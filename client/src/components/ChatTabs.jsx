@@ -39,7 +39,7 @@ function ChatTabs() {
       </div>
       <div className="right">
         {currentTab !== "All" && (
-          <button className="cancel-button" onClick={closeTab}>
+          <button className="button-cancel" onClick={closeTab}>
             X
           </button>
         )}
