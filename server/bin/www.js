@@ -10,7 +10,9 @@ import debug from "debug";
 import http from "http";
 import { Server } from "socket.io";
 import sanitizeHtml from "sanitize-html";
-
+import Conversation from "../models/conversationSchema.js";
+import User from "../models/userSchema.js";
+import Message from "../models/messageSchema.js";
 /**
  * Get port from environment and store in Express.
  */
@@ -70,7 +72,6 @@ users = [
 */
 // middleware
 io.use((socket, next) => {
-  console.log(socket.handshake.auth);
   socket.username = sanitizeHtml(socket.handshake.auth.username);
   socket.userId = sanitizeHtml(socket.handshake.auth.userId);
   next();
@@ -113,19 +114,73 @@ io.on("connection", (socket) => {
     const cleanFrom = sanitizeHtml(from);
     const cleanText = sanitizeHtml(text);
     const toUser = users.find((user) => user.name === to);
+
+    // save conversation in database
+
     // send socket event to the sender and receipient
     io.to(socket.id).to(toUser.socketId).emit("privateMsgResponse", {
       to: cleanTo,
       from: cleanFrom,
       text: cleanText,
     });
+
+    // check if conversation exists
+    const convoExists = Conversation.findOne({
+      participants: { $all: [toUser.userId, socket.userId] },
+    })
+      .exec()
+      .then((existingConvo) => {
+        if (existingConvo) {
+          // conversation exists
+          const newMsg = new Message({
+            sender: socket.userId,
+            text: cleanText,
+            conversation: existingConvo.id,
+          })
+            .save()
+            .then((msg) => {
+              Conversation.findByIdAndUpdate(
+                existingConvo.id,
+                {
+                  $push: { messages: msg.id },
+                },
+                { new: true, upsert: true }
+              ).exec();
+            })
+            .catch((err) => console.log(err));
+        } else {
+          // conversation doesn't exist, create a new one
+          const conversation = new Conversation({
+            participants: [socket.userId, toUser.userId],
+          })
+            .save()
+            .then((newConvo) => {
+              const newMsg = new Message({
+                sender: socket.userId,
+                text: cleanText,
+                conversation: newConvo.id,
+              })
+                .save()
+                .then((msg) => {
+                  Conversation.findByIdAndUpdate(
+                    existingConvo.id,
+                    {
+                      $push: { messages: msg.id },
+                    },
+                    { new: true, upsert: true }
+                  ).exec();
+                });
+            })
+            .catch((err) => console.log(err));
+        }
+      });
   });
 
   socket.on("disconnect", () => {
     users = users.filter((user) => user.socketId !== socket.id);
     io.emit("disconnectResponse", {
       name: "Server",
-      text: `User disconnected: ${username}`,
+      text: `User disconnected: ${socket.username}`,
       users: users,
     });
     socket.disconnect();
