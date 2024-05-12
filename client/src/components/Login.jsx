@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/Login.module.css";
 
 function Login() {
-  const { user, setUser, token, setToken } = useContext(AppContext);
+  const { user, setUser, setToken } = useContext(AppContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [logged, setLogged] = useState(null);
@@ -60,6 +60,8 @@ function Login() {
         if (body.success) {
           setUser(body.user.username);
           localStorage.setItem("accessToken", body.jwt.token);
+          localStorage.setItem("username", body.user.username);
+          localStorage.setItem("dbId", body.user._id);
           setToken(body.jwt.token);
           setLogged(true);
           setUsername("");

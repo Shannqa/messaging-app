@@ -5,15 +5,8 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatUserList() {
-  const {
-    socket,
-    users,
-    setUsers,
-    openTabs,
-    setOpenTabs,
-    currentTab,
-    setCurrentTab,
-  } = useContext(AppContext);
+  const { users, setUsers, openTabs, setOpenTabs, currentTab, setCurrentTab } =
+    useContext(AppContext);
 
   function openChat(name) {
     const isTabAlreadyOpen = openTabs.some((tab) => tab.name === name);

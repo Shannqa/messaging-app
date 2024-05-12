@@ -4,8 +4,6 @@ import React from "react";
 import Logout from "./Logout.jsx";
 
 function ButtonsTop() {
-  const { socket } = useContext(AppContext);
-
   return (
     <div className="chat-buttons-top">
       <button className="button">Contacts</button>

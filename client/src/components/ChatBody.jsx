@@ -4,15 +4,8 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatBody() {
-  const {
-    socket,
-    user,
-    currentTab,
-    allTab,
-    openTabs,
-    setOpenTabs,
-    lastMessageRef,
-  } = useContext(AppContext);
+  const { user, currentTab, allTab, openTabs, setOpenTabs, lastMessageRef } =
+    useContext(AppContext);
 
   if (!currentTab) {
     return (

@@ -11,6 +11,8 @@ function Logout() {
 
   function handleLogout() {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("username");
+    localStorage.removeItem("userId");
     setUser(null);
     setLogged(null);
     navigate("/");

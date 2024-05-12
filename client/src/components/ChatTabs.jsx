@@ -5,7 +5,7 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatTabs() {
-  const { socket, openTabs, setOpenTabs, currentTab, setCurrentTab } =
+  const { openTabs, setOpenTabs, currentTab, setCurrentTab } =
     useContext(AppContext);
 
   function changeTab(tabName) {

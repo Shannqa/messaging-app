@@ -5,7 +5,7 @@ import Login from "./Login.jsx";
 // import styles from "../styles/Home.module.css";
 
 function Home() {
-  const { socket, user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
 
   return <div className="main">{user ? <Client /> : <Login />}</div>;
 }

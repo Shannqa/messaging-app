@@ -70,6 +70,9 @@ users = [
 */
 // middleware
 io.use((socket, next) => {
+  console.log(socket.handshake.auth);
+  socket.username = sanitizeHtml(socket.handshake.auth.username);
+  socket.userId = sanitizeHtml(socket.handshake.auth.userId);
   next();
 });
 
@@ -77,14 +80,18 @@ io.use((socket, next) => {
 io.on("connection", (socket) => {
   // join own private message room
   socket.join(socket.id);
-  const username = sanitizeHtml(socket.handshake.query.user);
-  console.log(socket.handshake);
-  users.push({ name: username, socketId: socket.id });
-  console.log(`a user connected, username: ${username}, id: ${socket.id}`);
+  users.push({
+    name: socket.username,
+    userId: socket.userId,
+    socketId: socket.id,
+  });
+  console.log(
+    `a user connected, username: ${socket.username}, userId: ${socket.userId}, socketId: ${socket.id}`
+  );
 
   io.emit("connectionResponse", {
     name: "Server",
-    text: `User connected: ${username}`,
+    text: `User connected: ${socket.username}`,
     users: users,
   });
 

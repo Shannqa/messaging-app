@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { AppContext } from "./Root.jsx";
+import { ChatContext } from "./Chat.jsx";
 import React from "react";
 import ChatBody from "./ChatBody.jsx";
 import ChatInput from "./ChatInput.jsx";
@@ -10,8 +11,8 @@ import ButtonsTop from "./ButtonsTop.jsx";
 // import styles from "../styles/Home.module.css";
 
 function Client() {
+  const { socket } = useContext(ChatContext);
   const {
-    socket,
     users,
     setUsers,
     user,
