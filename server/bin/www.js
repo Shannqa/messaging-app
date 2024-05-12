@@ -163,7 +163,7 @@ io.on("connection", (socket) => {
                 .save()
                 .then((msg) => {
                   Conversation.findByIdAndUpdate(
-                    existingConvo.id,
+                    newConvo.id,
                     {
                       $push: { messages: msg.id },
                     },

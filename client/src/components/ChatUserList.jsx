@@ -5,15 +5,57 @@ import React from "react";
 // import styles from "../styles/Home.module.css";
 
 function ChatUserList() {
-  const { users, setUsers, openTabs, setOpenTabs, currentTab, setCurrentTab } =
-    useContext(AppContext);
+  const {
+    user,
+    users,
+    setUsers,
+    openTabs,
+    setOpenTabs,
+    currentTab,
+    setCurrentTab,
+  } = useContext(AppContext);
+
+  const storageToken = localStorage.getItem("accessToken");
 
   function openChat(name) {
     const isTabAlreadyOpen = openTabs.some((tab) => tab.name === name);
     if (!isTabAlreadyOpen) {
-      setOpenTabs([...openTabs, { name: name, messages: [] }]);
+      const msgsFromDb = getMessages(name);
+      if (!msgsFromDb) {
+        // if there no messages in the database
+        setOpenTabs([...openTabs, { name: name, messages: [] }]);
+      }
     }
     setCurrentTab(name);
+  }
+
+  // get messages from the database for the open tab
+  function getMessages(convoPartner) {
+    fetch("/api/messages", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        authorization: storageToken,
+      },
+      body: JSON.stringify({
+        partner: convoPartner,
+      }),
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        if (body.messages) {
+          const parsedMsgs = JSON.parse(body.messages);
+          setOpenTabs([
+            ...openTabs,
+            { name: convoPartner, messages: parsedMsgs },
+          ]);
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   return (
