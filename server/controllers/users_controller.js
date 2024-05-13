@@ -19,14 +19,15 @@ const users_addcontact = async (req, res) => {
 
 const users_getcontacts = async (req, res) => {
   try {
-    const user = User.findById(req.user.id).populate("contacts").exec();
+    const user = await User.findById(req.user.id)
+      .populate("contacts", ["username"])
+      .exec();
     console.log(user);
+    res.status(200).json({ user });
   } catch {
     console.log(err);
     res.status(400).end();
   }
-
-  res.status(200).end();
 };
 
 ////////////////////// old, check if needed still

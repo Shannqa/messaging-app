@@ -107,12 +107,20 @@ function ChatUserList() {
         ) : (
           contacts.map((contact) => {
             return (
-              <p className="user" key={contact.userId}>
-                {contact.name}
+              <p
+                className="user"
+                key={contact._id}
+                onClick={(e) => {
+                  // openChat(user.name);
+                  toggleUserMenu(contact._id);
+                }}
+              >
+                {contact.username}
               </p>
             );
           })
         )}
+        {userMenu && <MenuUserList targetUser={targetUser} />}
       </div>
     );
   }

@@ -5,6 +5,7 @@ import Logout from "./Logout.jsx";
 
 function ButtonsTop() {
   const { userListTab, setUserListTab } = useContext(AppContext);
+
   return (
     <div className="chat-buttons-top">
       <button className="button" onClick={(e) => setUserListTab("Contacts")}>

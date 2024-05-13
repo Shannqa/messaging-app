@@ -23,8 +23,11 @@ function Client() {
     setOpenTabs,
     lastMessageRef,
     currentTab,
+    contacts,
+    setContacts,
   } = useContext(AppContext);
 
+  const storageToken = localStorage.getItem("accessToken");
   useEffect(() => {
     socket.on("publicMessageResponse", ({ name, socketId, text }) => {
       setAllTab([...allTab, { name: name, text: text }]);
@@ -124,6 +127,35 @@ function Client() {
     // instantly scroll to the last message when changing a tab
     lastMessageRef.current?.scrollIntoView({ behavior: "instant" });
   }, [currentTab]);
+
+  // get user's contacts
+  useEffect(() => {
+    fetch("/api/users/contacts", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        authorization: storageToken,
+      },
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        if (body) {
+          console.log(body);
+
+          setContacts(body.user.contacts);
+          // const parsedMsgs = JSON.parse(body.messages);
+          // setOpenTabs([
+          //   ...openTabs,
+          //   { name: convoPartner, messages: parsedMsgs },
+          // ]);
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className="client">

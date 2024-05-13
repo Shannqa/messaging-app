@@ -46,34 +46,6 @@ function MenuUserList({ targetUser }) {
       .catch((err) => console.log(err));
   }
 
-  function getContacts() {
-    fetch("/api/users/contacts", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        authorization: storageToken,
-      },
-      body: JSON.stringify({
-        target: targetUid,
-      }),
-    })
-      .then((res) => res.json())
-      .then((body) => {
-        if (body.messages) {
-          const parsedMsgs = JSON.parse(body.messages);
-          setOpenTabs([
-            ...openTabs,
-            { name: convoPartner, messages: parsedMsgs },
-          ]);
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .catch((err) => console.log(err));
-  }
-
   return (
     <div className="user-list-tooltip">
       <button>
