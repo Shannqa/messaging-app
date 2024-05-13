@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { AppContext } from "./Root.jsx";
 import React from "react";
+import MenuUserList from "./MenuUserList.jsx";
 
 // import styles from "../styles/Home.module.css";
 
@@ -13,8 +14,14 @@ function ChatUserList() {
     setOpenTabs,
     currentTab,
     setCurrentTab,
+    userListTab,
+    setUserListTab,
+    contacts,
+    setContacts,
   } = useContext(AppContext);
 
+  const [userMenu, setUserMenu] = useState(false);
+  const [targetUser, setTargetUser] = useState(null);
   const storageToken = localStorage.getItem("accessToken");
 
   function openChat(name) {
@@ -58,24 +65,57 @@ function ChatUserList() {
       .catch((err) => console.log(err));
   }
 
-  return (
-    <div className="chat-userlist">
-      <p>Online users:</p>
-      {users.map((user, index) => {
-        return (
-          <p
-            className="user"
-            key={user.socketId}
-            onClick={(e) => {
-              openChat(user.name);
-            }}
-          >
-            {user.name}
-          </p>
-        );
-      })}
-    </div>
-  );
+  function toggleUserMenu(target) {
+    if (userMenu) {
+      // close
+      setUserMenu(false);
+      setTargetUser(null);
+    } else {
+      // open
+      setUserMenu(true);
+      setTargetUser(target);
+    }
+  }
+
+  if (userListTab === "Rooms") {
+    return (
+      <div className="chat-userlist">
+        <p>Online users:</p>
+        {users.map((user, index) => {
+          return (
+            <p
+              className="user"
+              key={user.socketId}
+              onClick={(e) => {
+                // openChat(user.name);
+                toggleUserMenu(user.userId);
+              }}
+            >
+              {user.name}
+            </p>
+          );
+        })}
+        {userMenu && <MenuUserList targetUser={targetUser} />}
+      </div>
+    );
+  } else if (userListTab === "Contacts") {
+    return (
+      <div className="chat-userlist">
+        <p>Contacts:</p>
+        {contacts.length === 0 ? (
+          <p>No contacts yet!</p>
+        ) : (
+          contacts.map((contact) => {
+            return (
+              <p className="user" key={contact.userId}>
+                {contact.name}
+              </p>
+            );
+          })
+        )}
+      </div>
+    );
+  }
 }
 
 export default ChatUserList;

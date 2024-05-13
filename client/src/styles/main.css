@@ -163,3 +163,12 @@ body {
   width: 100%;
   margin: 8px;
 }
+
+.user-list-tooltip {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-list-tooltip button {
+  cursor: pointer;
+}

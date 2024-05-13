@@ -21,6 +21,10 @@ export const AppContext = createContext({
   allTab: "",
   setAllTab: () => {},
   lastMessageRef: "",
+  userListTab: "",
+  setUserListTab: () => {},
+  contacts: [],
+  setContacts: () => {},
   // error: "",
   // setError: () => {},
 });
@@ -34,8 +38,10 @@ function Root() {
   // const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
   const [allTab, setAllTab] = useState([]);
+  const [userListTab, setUserListTab] = useState("Rooms");
   const lastMessageRef = useRef(null);
   const navigate = useNavigate();
+  const [contacts, setContacts] = useState([]);
   // verify token on refresh
   useEffect(() => {
     const storageToken = localStorage.getItem("accessToken");
@@ -77,6 +83,11 @@ function Root() {
         allTab,
         setAllTab,
         lastMessageRef,
+        userListTab,
+        setUserListTab,
+        contacts,
+        setContacts,
+
         // error,
         // setError,
       }}

@@ -9,6 +9,7 @@ import logger from "morgan";
 import indexRouter from "./routes/indexRouter.js";
 import authRouter from "./routes/authRouter.js";
 import msgRouter from "./routes/msgRouter.js";
+import usersRouter from "./routes/usersRouter.js";
 import io from "./bin/www.js";
 import connectDB from "./config/db.js";
 import MongoStore from "connect-mongo";
@@ -37,6 +38,7 @@ app.set("view engine", "ejs");
 
 app.use("/api/auth", authRouter);
 app.use("/api/", msgRouter);
+app.use("/api/", usersRouter);
 app.use("/", indexRouter);
 
 // catch 404 and forward to error handler
