@@ -13,9 +13,10 @@ import ButtonsTop from "./ButtonsTop.jsx";
 function Client() {
   const { socket } = useContext(ChatContext);
   const {
+    user,
+    setUser,
     users,
     setUsers,
-    user,
     allTab,
     setAllTab,
     token,
@@ -110,6 +111,7 @@ function Client() {
     socket.on("connectionResponse", ({ name, text, users }) => {
       setAllTab([...allTab, { name: name, text: text }]);
       setUsers(users);
+      console.log("connection response", users); // after refresh the list of users is not checked
     });
 
     socket.on("disconnectResponse", ({ name, text, users }) => {
@@ -142,8 +144,10 @@ function Client() {
       .then((body) => {
         if (body) {
           console.log(body);
-
+          setUser(body.user.username); // doesnt help // added to see if it fixes a bug where after refreshing a page the user and contacts are not visible
           setContacts(body.user.contacts);
+
+          console.log("contacts", body.user.contacts);
           // const parsedMsgs = JSON.parse(body.messages);
           // setOpenTabs([
           //   ...openTabs,

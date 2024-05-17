@@ -24,56 +24,18 @@ function ChatUserList() {
   const [targetUser, setTargetUser] = useState(null);
   const storageToken = localStorage.getItem("accessToken");
 
-  function openChat(name) {
-    const isTabAlreadyOpen = openTabs.some((tab) => tab.name === name);
-    if (!isTabAlreadyOpen) {
-      const msgsFromDb = getMessages(name);
-      if (!msgsFromDb) {
-        // if there no messages in the database
-        setOpenTabs([...openTabs, { name: name, messages: [] }]);
-      }
-    }
-    setCurrentTab(name);
-  }
-
-  // get messages from the database for the open tab
-  function getMessages(convoPartner) {
-    fetch("/api/messages", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        authorization: storageToken,
-      },
-      body: JSON.stringify({
-        partner: convoPartner,
-      }),
-    })
-      .then((res) => res.json())
-      .then((body) => {
-        if (body.messages) {
-          const parsedMsgs = JSON.parse(body.messages);
-          setOpenTabs([
-            ...openTabs,
-            { name: convoPartner, messages: parsedMsgs },
-          ]);
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .catch((err) => console.log(err));
-  }
-
-  function toggleUserMenu(target) {
-    if (userMenu) {
-      // close
+  function toggleUserMenu(targetId, targetName) {
+    if (userMenu && targetId === targetUser.id) {
+      // close the menu
       setUserMenu(false);
       setTargetUser(null);
+    } else if (userMenu && targetId !== targetUser.id) {
+      // open the menu for new user
+      setTargetUser({ id: targetId, username: targetName });
     } else {
-      // open
+      // open the menu
       setUserMenu(true);
-      setTargetUser(target);
+      setTargetUser({ id: targetId, username: targetName });
     }
   }
 
@@ -88,7 +50,7 @@ function ChatUserList() {
               key={user.socketId}
               onClick={(e) => {
                 // openChat(user.name);
-                toggleUserMenu(user.userId);
+                toggleUserMenu(user.userId, user.name);
               }}
             >
               {user.name}
@@ -112,7 +74,7 @@ function ChatUserList() {
                 key={contact._id}
                 onClick={(e) => {
                   // openChat(user.name);
-                  toggleUserMenu(contact._id);
+                  toggleUserMenu(contact._id, contact.username);
                 }}
               >
                 {contact.username}

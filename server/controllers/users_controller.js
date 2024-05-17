@@ -1,20 +1,73 @@
 import User from "../models/userSchema.js";
 
 const users_addcontact = async (req, res) => {
+  const isInContacts = await User.find({
+    _id: req.user.id,
+    contacts: { _id: req.body.target },
+  });
+
+  if (isInContacts.length > 0) {
+    return res
+      .status(400)
+      .json({ success: false, message: "User is already in contacts" });
+  }
   try {
-    User.findByIdAndUpdate(
+    const targetUser = await User.findById(req.body.target);
+
+    await User.findByIdAndUpdate(
       req.user.id,
       {
-        $push: { contacts: req.body.target },
+        $push: { contacts: targetUser },
       },
       { new: true, upsert: true }
-    ).exec();
+    )
+      .populate("contacts")
+      .exec();
+
+    const [newContacts] = await User.find({ _id: req.user.id }).populate(
+      "contacts"
+    );
+    console.log("nww", newContacts);
+    res.status(200).json({
+      success: true,
+      message: "successful",
+      contacts: newContacts.contacts,
+    });
   } catch {
     console.log(err);
-    res.status(400).end();
+    res.status(400).json({
+      success: false,
+      message: "failure",
+      contacts: newContacts.contacts,
+    });
   }
+};
 
-  res.status(200).end();
+const users_deletecontact = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.user.id, {
+      $pull: { contacts: req.body.target },
+    })
+      .populate("contacts")
+      .exec();
+
+    const [newContacts] = await User.find({ _id: req.user.id }).populate(
+      "contacts"
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "successful",
+      contacts: newContacts.contacts,
+    });
+  } catch {
+    console.log(err);
+    res.status(400).json({
+      success: false,
+      message: "failure",
+      contacts: req.user.contacts,
+    });
+  }
 };
 
 const users_getcontacts = async (req, res) => {
@@ -26,7 +79,11 @@ const users_getcontacts = async (req, res) => {
     res.status(200).json({ user });
   } catch {
     console.log(err);
-    res.status(400).end();
+    res.status(400).json({
+      success: false,
+      message: "failure",
+      contacts: req.user.contacts,
+    });
   }
 };
 
@@ -51,4 +108,10 @@ const users_post = async (req, res) => {
   }
 };
 
-export { users_get, users_post, users_addcontact, users_getcontacts };
+export {
+  users_get,
+  users_post,
+  users_addcontact,
+  users_getcontacts,
+  users_deletecontact,
+};
