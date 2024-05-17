@@ -27,6 +27,10 @@ export const AppContext = createContext({
   setContacts: () => {},
   // error: "",
   // setError: () => {},
+  userMenu: "",
+  setUserMenu: () => {},
+  targetUser: "",
+  setTargetUser: () => {},
 });
 
 function Root() {
@@ -42,6 +46,8 @@ function Root() {
   const lastMessageRef = useRef(null);
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
+  const [userMenu, setUserMenu] = useState(false);
+  const [targetUser, setTargetUser] = useState(null);
   // verify token on refresh
   useEffect(() => {
     const storageToken = localStorage.getItem("accessToken");
@@ -87,7 +93,10 @@ function Root() {
         setUserListTab,
         contacts,
         setContacts,
-
+        userMenu,
+        setUserMenu,
+        targetUser,
+        setTargetUser,
         // error,
         // setError,
       }}

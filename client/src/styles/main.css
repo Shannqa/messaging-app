@@ -172,3 +172,7 @@ body {
 .user-list-tooltip button {
   cursor: pointer;
 }
+
+.chat-userlist .target {
+  background-color: rgb(97, 158, 158);
+}

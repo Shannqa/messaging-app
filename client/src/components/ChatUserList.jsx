@@ -18,10 +18,12 @@ function ChatUserList() {
     setUserListTab,
     contacts,
     setContacts,
+    userMenu,
+    setUserMenu,
+    targetUser,
+    setTargetUser,
   } = useContext(AppContext);
 
-  const [userMenu, setUserMenu] = useState(false);
-  const [targetUser, setTargetUser] = useState(null);
   const storageToken = localStorage.getItem("accessToken");
 
   function toggleUserMenu(targetId, targetName) {
@@ -46,7 +48,11 @@ function ChatUserList() {
         {users.map((user, index) => {
           return (
             <p
-              className="user"
+              className={
+                targetUser && user.userId === targetUser.id
+                  ? "user target"
+                  : "user"
+              }
               key={user.socketId}
               onClick={(e) => {
                 // openChat(user.name);
@@ -70,7 +76,11 @@ function ChatUserList() {
           contacts.map((contact) => {
             return (
               <p
-                className="user"
+                className={
+                  targetUser && contact._id === targetUser.id
+                    ? "user target"
+                    : "user"
+                }
                 key={contact._id}
                 onClick={(e) => {
                   // openChat(user.name);
