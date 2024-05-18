@@ -1,4 +1,3 @@
-const API_URL_DEV = "";
-const API_URL = "https://circular-gamy-stone.glitch.me";
+const API_URL = process.env.NODE_ENV === "development" ? "" : process.env.BACK;
 
-export { API_URL, API_URL_DEV };
+export { API_URL };

@@ -50,7 +50,6 @@ function Login() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": `${API_URL}`,
       },
       body: JSON.stringify({
         username: username,

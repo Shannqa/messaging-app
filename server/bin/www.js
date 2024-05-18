@@ -23,10 +23,15 @@ app.set("port", port);
  * Create HTTP server.
  */
 
+const client =
+  process.env.NODE_ENV === "development"
+    ? process.env.FRONT_DEV
+    : process.env.FRONT;
+
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: SOCKET_ORIGIN,
+    origin: client,
     credentials: true,
   },
 });
