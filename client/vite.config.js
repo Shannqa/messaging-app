@@ -1,12 +1,13 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { API_URL } from "./src/api";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: process.env.API_TARGET,
+        target: API_URL,
         changeOrigin: true,
         secure: false,
       },
