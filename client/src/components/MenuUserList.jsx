@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { AppContext } from "./Root.jsx";
 import React from "react";
+import { API_URL } from "../api.js";
 
 // import styles from "../styles/Home.module.css";
 
@@ -66,7 +67,7 @@ function MenuUserList({ targetUser }) {
       return console.log("already in contacts");
     }
 
-    fetch("/api/users/contacts", {
+    fetch(`${API_URL}/api/users/contacts`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -94,7 +95,7 @@ function MenuUserList({ targetUser }) {
       return console.log("is not in contacts");
     }
 
-    fetch("/api/users/contacts", {
+    fetch(`${API_URL}/api/users/contacts`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",

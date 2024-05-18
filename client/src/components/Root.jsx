@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import React from "react";
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
+import { API_URL } from "../api.js";
 import "../styles/main.css";
 // import ErrorModal from "./ErrorModal.jsx";
 
@@ -52,7 +53,7 @@ function Root() {
   useEffect(() => {
     const storageToken = localStorage.getItem("accessToken");
     if (storageToken) {
-      fetch("/api/auth/check", {
+      fetch(`${API_URL}/api/auth/check`, {
         method: "POST",
         headers: {
           Accept: "application/json",

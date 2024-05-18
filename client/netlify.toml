@@ -1,0 +1,10 @@
+[[redirects]]
+from = "/api/*"
+to = "https://circular-gamy-stone.glitch.me/server/api/:splat"
+status = 200
+force = true
+
+[[headers]]
+for = "/api/*"
+[headers.values]
+Access-Control-Allow-Origin = "*"

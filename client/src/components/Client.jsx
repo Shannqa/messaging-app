@@ -8,6 +8,7 @@ import ChatTabs from "./ChatTabs.jsx";
 import ChatUserList from "./ChatUserList.jsx";
 import Buttons from "./Buttons.jsx";
 import ButtonsTop from "./ButtonsTop.jsx";
+import { API_URL } from "../api.js";
 // import styles from "../styles/Home.module.css";
 
 function Client() {
@@ -132,7 +133,7 @@ function Client() {
 
   // get user's contacts
   useEffect(() => {
-    fetch("/api/users/contacts", {
+    fetch(`${API_URL}/api/users/contacts`, {
       method: "GET",
       headers: {
         Accept: "application/json",

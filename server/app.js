@@ -13,6 +13,12 @@ import usersRouter from "./routes/usersRouter.js";
 import io from "./bin/www.js";
 import connectDB from "./config/db.js";
 import MongoStore from "connect-mongo";
+import helmet from "helmet";
+import RateLimit from "express-rate-limit";
+const limiter = RateLimit({
+  windowsMs: 1 * 60 * 1000, // 1 minute
+  max: 20,
+});
 const app = express();
 
 app.use(logger("dev"));
@@ -20,7 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
+app.use(helmet());
+app.use(limiter);
 connectDB();
 
 app.use(
