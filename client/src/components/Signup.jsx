@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { AppContext } from "./Root.jsx";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../api.js";
 import styles from "../styles/Login.module.css";
 
 function Signup() {
@@ -44,7 +45,7 @@ function Signup() {
     if (!nameCheck || !passCheck) {
       return;
     }
-    fetch("/api/auth/signup", {
+    fetch(`${API_URL}/api/auth/signup`, {
       method: "POST",
       headers: {
         Accept: "application/json",
