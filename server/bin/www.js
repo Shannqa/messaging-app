@@ -4,7 +4,6 @@
  * Module dependencies.
  */
 
-import { log } from "console";
 import app from "../app.js";
 import debug from "debug";
 import http from "http";
@@ -27,7 +26,7 @@ app.set("port", port);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: SOCKET_ORIGIN,
     credentials: true,
   },
 });
